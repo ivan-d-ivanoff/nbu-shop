@@ -1,7 +1,9 @@
 package org.informatics.service;
 
 
-public class Cashier {
+import java.io.Serializable;
+
+public class Cashier implements Serializable {
     private final String id;
     private final String name;
     private final double monthlySalary;

@@ -1,9 +1,10 @@
 package org.informatics.service;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 
-public class Good {
+public class Good implements Serializable {
     private final String id;
     private final String name;
     private final double costPrice;

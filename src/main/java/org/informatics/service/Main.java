@@ -2,7 +2,7 @@ package org.informatics.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -74,8 +74,73 @@ public class Main {
                 System.out.println("Added cashier: " + cname);
             }
 
+            System.out.println("Create a cash register (leave ID empty to finish):");
+
+            CashRegister register = null;
+            boolean cashierExists = false;
+            while (!cashierExists) {
+
+                System.out.print("Register ID: ");
+                String rid = scanner.nextLine().trim();
+                if (rid.isEmpty()) break;
+                System.out.print("Assign a cashier to register (add ID): ");
+                String cashierID = scanner.nextLine().trim();
+
+                Cashier cashier = null;
+
+                for (Cashier i : shop.getCashiers()) {
+                    if (Objects.equals(i.getId(), cashierID)) {
+                        cashier = i;
+                        register = new CashRegister(rid);
+                        register.assignCashier(cashier);
+                        cashierExists = true;
+                    }
+                }
+
+                if (!cashierExists) {
+                    System.err.println("Cashier ID does not exist: " + cashierID);
+                    continue;
+                }
+            }
+
             System.out.println("Setup complete.");
             System.out.println("Total cost (deliveries & salaries): " + shop.getTotalCost());
+
+            System.out.println("Enter product to sell (leave Name empty to finish):");
+
+            while (true) {
+                System.out.print("Item name: ");
+                String itemName = scanner.nextLine().trim();
+                if (itemName.isEmpty()) break;
+
+                boolean exists = false;
+                Good item = null;
+
+                for (Good i : shop.getInventory()) {
+                    if (Objects.equals(i.getName(), itemName)) {
+                        exists = true;
+                        item = i;
+                    }
+                }
+
+                if (!exists) {
+                    System.err.println("Item does not exist: " + itemName);
+                    continue;
+                }
+
+                System.out.println("Amount of " +  itemName + " to buy: ");
+
+                int cCount = Integer.parseInt(scanner.nextLine());
+
+                item.setQuantity(item.getQuantity() - cCount);
+
+                Map<Good, Integer> itemCount = new HashMap<>();
+                itemCount.put(item, cCount);
+
+                shop.sell(register, itemCount);
+                System.out.println("Successfully sold: " + itemName);
+            }
+
             System.out.println("Total revenue so far: " + shop.getTotalRevenue());
             System.out.println("Current profit: " + shop.getProfit());
         }

@@ -3,9 +3,9 @@ import java.util.*;
 
 
 public class Shop {
-    private final List<Good> inventory = new ArrayList<>();
-    private final List<Cashier> cashiers = new ArrayList<>();
-    private final List<Receipt> receipts = new ArrayList<>();
+    private List<Good> inventory = new ArrayList<>();
+    private List<Cashier> cashiers = new ArrayList<>();
+    private List<Receipt> receipts = new ArrayList<>();
 
     private final Pricing priceCalculator;
     private double totalRevenue = 0;
@@ -38,4 +38,6 @@ public class Shop {
     public double getTotalRevenue() { return totalRevenue; }
     public double getTotalCost() { return totalCost; }
     public double getProfit() { return totalRevenue - totalCost; }
+    public List<Good> getInventory() { return inventory; }
+    public List<Cashier> getCashiers() { return cashiers; }
 }

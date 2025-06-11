@@ -10,8 +10,11 @@ import java.util.List;
 
 
 
-public class Receipt {
-    private static int counter = 0;
+public class Receipt implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    private int counter = 0;
 
     private final int number;
     private final Cashier cashier;
@@ -68,12 +71,15 @@ public class Receipt {
             }
 
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException("Error saving receipt to files", e);
         }
     }
 
 
-    private static class LineItem {
+    private static class LineItem implements Serializable {
+        private static final long serialVersionUID = 1L;
+
         private final Good good;
         private final int quantity;
         private final double unitPrice;
